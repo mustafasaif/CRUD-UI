@@ -1,0 +1,15 @@
+.heading{
+    margin-top: 220px;
+    background-color: tomato;
+    border: black;
+    border-radius: 12px;
+    padding: 60px;
+    width: fit-content;
+    margin-left: 35px;
+    
+    
+    
+}
+.alignment{
+    text-align: center;
+}

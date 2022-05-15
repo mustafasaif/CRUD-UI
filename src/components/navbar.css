@@ -1,0 +1,32 @@
+
+.nav-menu{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+.nav-item{
+    float: left;
+    border-right: 2px solid rgb(78, 74, 74);
+    border-radius: 19px;
+}
+
+
+.nav-item a{
+    display: block;
+    color:white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.nav-item a:hover:not(.active){
+    background-color: #111;
+    border-radius: 19px ;
+}
+
+.active{
+    background-color: #50b38f;
+    border-radius: 19px;
+}
