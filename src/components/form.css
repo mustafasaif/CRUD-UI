@@ -4,7 +4,7 @@
   border: 1px solid #000000;
   border-radius: 5px;
   background: #c25a5a;
-  width: 220px;
+  width: 300px;
   display: block;
   margin-top: 180px;
   text-align: center;
@@ -17,7 +17,8 @@
   font-size: 17px;
 }
 
-.inputstyle{
+input[type=text],
+input[type=email] {
   margin: 5px 0 10px 0;
   padding: 5px;
   border: 1px solid #000000;

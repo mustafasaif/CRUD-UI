@@ -10,10 +10,7 @@ function GetAllUsers() {
 
   const handleretrieveUser = async () => {
     try {
-      const users = await axios.get(
-        "http://localhost:3002/create_user/user_info"
-      );
-      console.log(users.data);
+      const users = await axios.get("http://localhost:3001/v1/all");
       setUser(users.data);
     } catch (err) {
       console.error(err);

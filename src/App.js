@@ -1,16 +1,30 @@
-import './App.css';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Navbar from './components/navbar';
-import Home from './components/Home';
-import CreateNewUser from './components/CreateNewUser'
-import GetAllUsers from './components/GetAllUsers';
-import GetSingleUser from './components/GetSingleUser';
-import DeleteUser from './components/DeleteUser';
-import UpdateUser from './components/UpdateUser';
+import "./App.css";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Navbar from "./components/navbar";
+import Home from "./components/Home";
+import CreateNewUser from "./components/CreateNewUser";
+import GetAllUsers from "./components/GetAllUsers";
+import GetSingleUser from "./components/GetSingleUser";
+import DeleteUser from "./components/DeleteUser";
+import UpdateUser from "./components/UpdateUser";
 function App() {
   return (
     <div>
       <Router>
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
         <Navbar />
         <div className="pages">
           <Switch>
@@ -23,7 +37,7 @@ function App() {
           </Switch>
         </div>
       </Router>
-    </div >
+    </div>
   );
 }
 export default App;

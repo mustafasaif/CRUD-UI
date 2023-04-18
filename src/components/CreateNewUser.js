@@ -1,62 +1,108 @@
-import { React, useState } from 'react'
-import axios from 'axios';
-// import { isUndefined } from 'lodash';
-import './form.css'
+import { React, useState } from "react";
+import { Formik } from "formik";
+import { Form } from "react-bootstrap";
+import CircularProgress from "@mui/joy/CircularProgress";
+import * as Yup from "yup";
+import { toast } from "react-toastify";
+import axios from "axios";
+import "./form.css";
 
-function Newuser() {
-    const [state, setState] = useState({
-        fname: '',
-        age: '',
-        email: ''
-    })
-    const [postdata, setPostdata] = useState(undefined)
-    console.log(postdata)
-
-    const handlesubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const post = await axios.post("http://localhost:3002/create_user", {
-                Name: state.fname,
-                Age: state.age,
-                Email: state.email
+const Newuser = () => {
+  const [isLoading, setLoading] = useState(false);
+  const schema = Yup.object().shape({
+    Name: Yup.string().min(3).required(),
+    Age: Yup.number().min(2).max(99).required(),
+    Email: Yup.string().email().required(),
+  });
+  return (
+    <>
+      <Formik
+        enableReinitialize
+        initialValues={{ Name: "", Age: "", Email: "" }}
+        onSubmit={async (values) => {
+          setLoading(true);
+          await axios
+            .post("http://localhost:3001/v1/create", {
+              Name: values.Name,
+              Age: values.Age,
+              Email: values.Email,
             })
-            // console.log(post)
-            if (post.data.Name) {
-                alert(" NEW USER CREATED SUCCESSFULLY " + post.data.Name + "  " + post.data.Age + "  " + post.data.Email)
-                setPostdata(post.data)
-            }
-            else {  
-                alert(post.data.message.errors.Email.message)
-            }
-        } catch (err) {
-            console.error(err)
-        }
-    }
-    const handleChange = (event) => {
-        const value = event.target.value
-        setState({
-            ...state,
-            [event.target.name]: value
-        })
-    }
-    return (
-        <div>
-            <form onSubmit={handlesubmit} className="formstyle">
-                <label className="labelstyle">Name</label>
-                <input className="inputstyle" type="text" name="fname" value={state.fname} onChange={handleChange} required minlength="2" />
-                <label className="labelstyle">Age</label>
-                <input className="inputstyle" type="text" name="age" value={state.age} onChange={handleChange} required minlength="2" maxLength="2" />
-                <label className="labelstyle">Email</label>
-                <input className="inputstyle" type="email" name="email" value={state.email} onChange={handleChange} required />
-                <button type="submit" className="fill" >Submit</button>
-            </form>
-            {/* {!isUndefined(postdata) &&
-                <ul>
-                    <li> {postdata.Name}</li>
-                    <li>{postdata.Age}</li>
-                </ul>} */}
-        </div>
-    )
-}
+            .then((res) => {
+              setLoading(false);
+              const { Name } = res.data;
+              toast.success(`New user ${Name} created successfully`);
+            })
+            .catch((err) => {
+              setLoading(false);
+              toast.error(err.response.data);
+            });
+        }}
+        validationSchema={schema}
+      >
+        {({ values, errors, touched, handleChange, handleSubmit }) => (
+          <Form onSubmit={handleSubmit} className="formstyle">
+            <Form.Group>
+              <Form.Label className="labelstyle">Name</Form.Label>
+              <Form.Control
+                type="text"
+                onChange={handleChange}
+                as="input"
+                name="Name"
+                value={values.Name}
+              />
+              {errors.Name && touched.Name && (
+                <span style={{ color: "#A30000", fontWeight: "bold" }}>
+                  {errors.Name}
+                </span>
+              )}
+            </Form.Group>
+            <Form.Group>
+              <Form.Label className="labelstyle">Age</Form.Label>
+              <Form.Control
+                type="text"
+                onChange={handleChange}
+                as="input"
+                name="Age"
+                value={values.Age}
+              />
+              {errors.Age && touched.Age && (
+                <span style={{ color: "#A30000", fontWeight: "bold" }}>
+                  {errors.Age}
+                </span>
+              )}
+            </Form.Group>
+            <Form.Group>
+              <Form.Label className="labelstyle">Email</Form.Label>
+              <Form.Control
+                type="text"
+                onChange={handleChange}
+                as="input"
+                name="Email"
+                value={values.Email}
+              />
+              {errors.Email && touched.Email && (
+                <span style={{ color: "#A30000", fontWeight: "bold" }}>
+                  {errors.Email}
+                </span>
+              )}
+            </Form.Group>
+            <button type="submit" className="fill">
+              {isLoading && (
+                <CircularProgress
+                  color="danger"
+                  determinate={false}
+                  size="sm"
+                  value={22}
+                  variant="soft"
+                />
+              )}
+              Submit
+            </button>
+          </Form>
+        )}
+      </Formik>
+    </>
+  );
+};
 
 export default Newuser;
