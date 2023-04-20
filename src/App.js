@@ -1,7 +1,8 @@
-import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
+import "./App.css";
 import Navbar from "./components/navbar";
 import Home from "./components/Home";
 import CreateNewUser from "./components/CreateNewUser";
@@ -9,7 +10,8 @@ import GetAllUsers from "./components/GetAllUsers";
 import GetSingleUser from "./components/GetSingleUser";
 import DeleteUser from "./components/DeleteUser";
 import UpdateUser from "./components/UpdateUser";
-function App() {
+
+const App = () => {
   return (
     <div>
       <Router>
@@ -39,5 +41,5 @@ function App() {
       </Router>
     </div>
   );
-}
+};
 export default App;

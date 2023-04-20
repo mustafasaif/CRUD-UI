@@ -1,54 +1,76 @@
 import { React, useState, useEffect } from "react";
+import DataTable from "react-data-table-component";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import UpdateForm from "./UpdateUser";
 import axios from "axios";
-import "./table.css";
-function GetAllUsers() {
+
+const GetAllUsers = () => {
   const [user, setUser] = useState([]);
-  console.log(user);
+  const [row, setRow] = useState();
+  const [show, setShow] = useState(false);
   useEffect(() => {
-    handleretrieveUser();
+    axios
+      .get("http://localhost:3001/v1/all")
+      .then((response) => {
+        setUser(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
-  const handleretrieveUser = async () => {
-    try {
-      const users = await axios.get("http://localhost:3001/v1/all");
-      setUser(users.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-  return (
-    <div>
-      <div className="headeralign">
-        <h2 className="headingget">HELLO YOU IN GET ALL USERS PAGE</h2>
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <td>ID</td>
-            <td>Name</td>
-            <td>Age</td>
+  const columns = [
+    {
+      name: "ID",
+      selector: (row) => row._id,
+    },
+    {
+      name: "Name",
+      selector: (row) => row.Name,
+    },
+    {
+      name: "Age",
+      selector: (row) => row.Age,
+    },
+    {
+      name: "Email",
+      selector: (row) => row.Email,
+    },
+    {
+      name: "Action",
+      cell: (row) => (
+        <>
+          <DeleteIcon
+            onClick={() => {
+              console.log(row);
+            }}
+          />
+          <EditIcon
+            onClick={() => {
+              setShow(true);
+              setRow(row);
+              console.log(row);
+            }}
+          />
+        </>
+      ),
+    },
+  ];
 
-            <td>Email</td>
-          </tr>
-        </thead>
-        <tbody>
-          {user &&
-            user.map((item, _id) => {
-              return (
-                // <>
-                <tr key={item._id}>
-                  <td>{item._id}</td>
-                  <td>{item.Name}</td>
-                  <td>{item.Age}</td>
-                  <td>{item.Email}</td>
-                </tr>
-                // </>
-              );
-            })}
-        </tbody>
-      </table>
-    </div>
+  return (
+    <>
+      <UpdateForm
+        Title="Testing"
+        show={show}
+        hide={() => {
+          setShow(false);
+        }}
+        data={row}
+      />
+      <DataTable columns={columns} data={user} pagination />
+    </>
   );
-}
+};
 
 export default GetAllUsers;

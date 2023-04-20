@@ -6,7 +6,6 @@
   background: #c25a5a;
   width: 300px;
   display: block;
-  margin-top: 180px;
   text-align: center;
 }
 
@@ -35,9 +34,12 @@ input[type=email] {
   padding: 10px 35px 9px;
   outline: 0;
   border: 1px solid black;
+  border-radius: 7px;
   cursor: pointer;
-  position: relative;
   background-color: rgba(245, 81, 81, 0);
+}
+.fill:hover{
+ background-color: rosybrown;
 }
 
 

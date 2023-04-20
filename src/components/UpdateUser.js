@@ -1,84 +1,122 @@
 import { React, useState } from "react";
 import axios from "axios";
 import "./form.css";
+import { Formik } from "formik";
+import { Form } from "react-bootstrap";
+import * as Yup from "yup";
+import { Modal } from "react-bootstrap";
+import CircularProgress from "@mui/joy/CircularProgress";
 
-function UpdateUser() {
-  const [userinfo, setUserinfo] = useState({
-    fname: undefined,
-    Age: undefined,
-    id: undefined,
-    email: undefined,
+const UpdateForm = ({ Title, hide, show, data }) => {
+  const [isLoading, setLoading] = useState(false);
+  const schema = Yup.object().shape({
+    Name: Yup.string().required(),
+    Id: Yup.string().required(),
+    Age: Yup.number().min(2).max(99).required(),
+    Email: Yup.string().email().required(),
   });
-
-  const handlechange = (event) => {
-    const value = event.target.value;
-    setUserinfo({
-      ...userinfo,
-      [event.target.name]: value,
-    });
-  };
-  const handleupdate = async (id, event) => {
-    event.preventDefault();
-    try {
-      const updateduser = await axios.patch(
-        "http://localhost:3001/create_user/" + id,
-        {
-          Name: userinfo.fname,
-          Age: userinfo.Age,
-          Email: userinfo.email,
-        }
-      );
-      console.log(updateduser);
-      if (updateduser.data.n === 1) {
-        alert("USER DETAILS UPDATED SUCCESSFULLY");
-        // console.log(updateduser)
-      } else {
-        alert("INVALID USER ID PLEASE TRY AGAIN");
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
   return (
-    <form onSubmit={(e) => handleupdate(userinfo.id, e)} className="formstyle">
-      <label className="labelstyle">ID</label>
-      <input
-        className="inputstyle"
-        type="text"
-        name="id"
-        value={userinfo.id}
-        onChange={handlechange}
-        required
-      ></input>
-      <label className="labelstyle">Name</label>
-      <input
-        className="inputstyle"
-        type="text"
-        name="fname"
-        value={userinfo.fname}
-        onChange={handlechange}
-      ></input>
-      <label className="labelstyle">Age</label>
-      <input
-        className="inputstyle"
-        type="text"
-        name="Age"
-        value={userinfo.Age}
-        onChange={handlechange}
-      ></input>
-      <label className="labelstyle">Email</label>
-      <input
-        className="inputstyle"
-        type="text"
-        name="email"
-        value={userinfo.email}
-        onChange={handlechange}
-      ></input>
-      <button className="fill" type="submit">
-        Submit
-      </button>
-    </form>
+    <>
+      <Formik
+        enableReinitialize
+        initialValues={{
+          Name: data ? data.Name : "",
+          Age: data ? data.Age : "",
+          Id: data ? data._id : "",
+          Email: data ? data.Email : "",
+        }}
+        onSubmit={async (values) => {
+          setLoading(true);
+          await axios
+            .patch("http://localhost:3001/create_user/" + values.Id, {
+              Name: values.Name,
+              Age: values.Age,
+              Email: values.Email,
+            })
+            .then(() => {
+              setLoading(false);
+            })
+            .catch(() => {
+              setLoading(false);
+            });
+        }}
+        validationSchema={schema}
+      >
+        {({ values, handleChange, handleSubmit, errors, touched }) => (
+          <>
+            <Modal show={show} onHide={hide}>
+              <Modal.Header closeButton>
+                <Modal.Title>{Title}</Modal.Title>
+              </Modal.Header>
+              <Form onSubmit={handleSubmit}>
+                <Modal.Body className="formstyle">
+                  <Form.Group>
+                    <Form.Label className="labelstyle">ID</Form.Label>
+                    <Form.Control
+                      className="inputstyle"
+                      as="input"
+                      type="text"
+                      name="Id"
+                      value={values.Id}
+                      onChange={handleChange}
+                      disabled
+                    />
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Label className="labelstyle">Name</Form.Label>
+                    <Form.Control
+                      className="inputstyle"
+                      as="input"
+                      name="Name"
+                      type="text"
+                      value={values.Name}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Label className="labelstyle">Age</Form.Label>
+                    <Form.Control
+                      className="inputstyle"
+                      as="input"
+                      name="Age"
+                      type="text"
+                      value={values.Age}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Label className="labelstyle">Email</Form.Label>
+                    <Form.Control
+                      className="inputstyle"
+                      as="input"
+                      name="Email"
+                      type="text"
+                      value={values.Email}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                </Modal.Body>
+                <Modal.Footer>
+                  <button className="fill" type="submit">
+                    {isLoading && (
+                      <CircularProgress
+                        color="danger"
+                        determinate={false}
+                        size="sm"
+                        value={22}
+                        variant="soft"
+                      />
+                    )}
+                    Save
+                  </button>
+                </Modal.Footer>
+              </Form>
+            </Modal>
+          </>
+        )}
+      </Formik>
+    </>
   );
-}
+};
 
-export default UpdateUser;
+export default UpdateForm;
