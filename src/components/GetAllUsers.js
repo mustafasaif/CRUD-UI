@@ -50,7 +50,6 @@ const GetAllUsers = () => {
             onClick={() => {
               setShow(true);
               setRow(row);
-              console.log(row);
             }}
           />
         </>
