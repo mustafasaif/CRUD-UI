@@ -3,22 +3,43 @@ import DataTable from "react-data-table-component";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import UpdateForm from "./UpdateUser";
-import axios from "axios";
+import { deleteUser, getUsers } from "../client/client";
+import DeletePopUp from "./DeleteUser";
 
 const GetAllUsers = () => {
   const [user, setUser] = useState([]);
   const [row, setRow] = useState();
   const [show, setShow] = useState(false);
-  useEffect(() => {
-    axios
-      .get("http://localhost:3001/v1/all")
-      .then((response) => {
-        setUser(response.data);
+  const [refresh, setRefresh] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleDelete = () => {
+    deleteUser(row)
+      .then(() => {
+        setOpen(false);
+        setRefresh(true);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  };
+  useEffect(() => {
+    getUsers()
+      .then((data) => {
+        setUser(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [refresh]);
 
   const columns = [
     {
@@ -43,7 +64,8 @@ const GetAllUsers = () => {
         <>
           <DeleteIcon
             onClick={() => {
-              console.log(row);
+              handleClickOpen();
+              setRow(row);
             }}
           />
           <EditIcon
@@ -65,7 +87,15 @@ const GetAllUsers = () => {
         hide={() => {
           setShow(false);
         }}
+        setShow={setShow}
         data={row}
+        setRefresh={setRefresh}
+      />
+      <DeletePopUp
+        handleClickOpen={handleClickOpen}
+        open={open}
+        handleClose={handleClose}
+        handleDelete={handleDelete}
       />
       <DataTable columns={columns} data={user} pagination />
     </>
