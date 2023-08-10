@@ -33,8 +33,9 @@ const Newuser = () => {
               toast.success(`New user ${Name} created successfully`);
             })
             .catch((err) => {
+              console.log(err.message);
               setLoading(false);
-              toast.error(err.response.data);
+              toast.error(err.message);
             });
         }}
         validationSchema={schema}
