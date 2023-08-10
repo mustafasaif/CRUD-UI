@@ -1,14 +1,13 @@
-import { React, useState } from "react";
-import axios from "axios";
-import "./form.css";
+import React, { useState } from "react";
 import { Formik } from "formik";
 import { Form } from "react-bootstrap";
 import * as Yup from "yup";
 import { Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
 import CircularProgress from "@mui/joy/CircularProgress";
+import { updateUser } from "../client/client";
 
-const UpdateForm = ({ Title, hide, show, data }) => {
+const UpdateForm = ({ Title, hide, show, data, setRefresh, setShow }) => {
   const [isLoading, setLoading] = useState(false);
   const schema = Yup.object().shape({
     Name: Yup.string().required(),
@@ -27,18 +26,15 @@ const UpdateForm = ({ Title, hide, show, data }) => {
         }}
         onSubmit={async (values) => {
           setLoading(true);
-          await axios
-            .patch("http://localhost:3001/v1/update" + values.Id, {
-              Name: values.Name,
-              Age: values.Age,
-              Email: values.Email,
-            })
+          updateUser(values)
             .then(() => {
               setLoading(false);
               toast.success(`User info updated successfully`);
+              setShow(false);
+              setRefresh(true);
             })
             .catch((error) => {
-              toast.error(error.response.data.message);
+              toast.error(error.message);
               setLoading(false);
             });
         }}
@@ -51,11 +47,10 @@ const UpdateForm = ({ Title, hide, show, data }) => {
                 <Modal.Title>{Title}</Modal.Title>
               </Modal.Header>
               <Form onSubmit={handleSubmit}>
-                <Modal.Body className="formstyle">
+                <Modal.Body>
                   <Form.Group>
-                    <Form.Label className="labelstyle">ID</Form.Label>
+                    <Form.Label>ID</Form.Label>
                     <Form.Control
-                      className="inputstyle"
                       type="text"
                       name="Id"
                       value={values.Id}
@@ -64,9 +59,8 @@ const UpdateForm = ({ Title, hide, show, data }) => {
                     />
                   </Form.Group>
                   <Form.Group>
-                    <Form.Label className="labelstyle">Name</Form.Label>
+                    <Form.Label>Name</Form.Label>
                     <Form.Control
-                      className="inputstyle"
                       as="input"
                       name="Name"
                       type="text"
@@ -80,9 +74,8 @@ const UpdateForm = ({ Title, hide, show, data }) => {
                     )}
                   </Form.Group>
                   <Form.Group>
-                    <Form.Label className="labelstyle">Age</Form.Label>
+                    <Form.Label>Age</Form.Label>
                     <Form.Control
-                      className="inputstyle"
                       as="input"
                       name="Age"
                       type="text"
@@ -96,9 +89,8 @@ const UpdateForm = ({ Title, hide, show, data }) => {
                     )}
                   </Form.Group>
                   <Form.Group>
-                    <Form.Label className="labelstyle">Email</Form.Label>
+                    <Form.Label>Email</Form.Label>
                     <Form.Control
-                      className="inputstyle"
                       as="input"
                       name="Email"
                       type="text"
@@ -113,7 +105,7 @@ const UpdateForm = ({ Title, hide, show, data }) => {
                   </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
-                  <button className="fill" type="submit" disabled={!dirty}>
+                  <button type="submit" disabled={!dirty}>
                     {isLoading && (
                       <CircularProgress
                         color="danger"

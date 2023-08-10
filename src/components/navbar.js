@@ -17,22 +17,7 @@ const Navbar = () => {
         </li>
         <li className="nav-item">
           <NavLink exact to="/getallusers" className="nav-links">
-            Get all users
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink exact to="/getuser" className="nav-links">
-            Get User
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink exact to="/deleteuser" className="nav-links">
-            Delete User
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink exact to="/updateuser" className="nav-links">
-            Update User
+            Modify Users
           </NavLink>
         </li>
       </ul>

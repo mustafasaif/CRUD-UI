@@ -1,47 +1,36 @@
-import React, { useState } from "react";
-import axios from "axios";
-import "./Singleuser.css";
-function DeleteUser() {
-  const [id, setid] = useState("");
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
-  const handlechange = (event) => {
-    const value = event.target.value;
-    setid(value);
-    console.log(id);
-  };
-  const handledelete = async (id, event) => {
-    event.preventDefault();
-    try {
-      const deleteduser = await axios.delete(
-        "http://localhost:3001/create_user/" + id
-      );
-      console.log(deleteduser);
-      if (deleteduser.data.n === 1) {
-        alert("USER DELETED SUCCESSFULLY");
-      } else {
-        alert("INVALID USER ID PLEASE TRY AGAIN");
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+const DeletePopUp = ({ handleClose, open, handleDelete }) => {
   return (
-    <form onSubmit={(e) => handledelete(id, e)} className="formstylesingle">
-      <label className="labelstyle1">ENTER USER ID TO BE DELETED</label>
-      <input
-        className="inputstyle1"
-        type="text"
-        value={id}
-        name="id"
-        onChange={handlechange}
-        required
-      ></input>
-      <button className="buttonstyle " type="submit">
-        {" "}
-        Submit
-      </button>
-    </form>
+    <div>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Do you wish to delete this user?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Once the user is deleted the data can not be retrieved.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Disagree</Button>
+          <Button onClick={handleDelete} autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
   );
-}
+};
 
-export default DeleteUser;
+export default DeletePopUp;
