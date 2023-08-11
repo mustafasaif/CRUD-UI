@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import axios from "axios";
 import "./form.css";
+import { createUser } from "../client/client";
 
 const Newuser = () => {
   const [isLoading, setLoading] = useState(false);
@@ -20,20 +21,19 @@ const Newuser = () => {
         enableReinitialize
         initialValues={{ Name: "", Age: "", Email: "" }}
         onSubmit={async (values) => {
+          const data = {
+            Name: values.Name,
+            Age: values.Age,
+            Email: values.Email,
+          };
           setLoading(true);
-          await axios
-            .post("http://localhost:3001/v1/create", {
-              Name: values.Name,
-              Age: values.Age,
-              Email: values.Email,
-            })
+          await createUser(data)
             .then((res) => {
               setLoading(false);
-              const { Name } = res.data;
+              const { Name } = res;
               toast.success(`New user ${Name} created successfully`);
             })
             .catch((err) => {
-              console.log(err.message);
               setLoading(false);
               toast.error(err.message);
             });
