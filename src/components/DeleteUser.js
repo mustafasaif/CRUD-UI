@@ -14,15 +14,15 @@ const DeletePopUp = ({ handleClose, open, handleDelete }) => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
+        <DialogTitle style={{ background: "#c25a5a" }} id="alert-dialog-title">
           {"Do you wish to delete this user?"}
         </DialogTitle>
-        <DialogContent>
+        <DialogContent style={{ background: "#c25a5a" }}>
           <DialogContentText id="alert-dialog-description">
             Once the user is deleted the data can not be retrieved.
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
+        <DialogActions style={{ background: "#c25a5a" }}>
           <Button onClick={handleClose}>Disagree</Button>
           <Button onClick={handleDelete} autoFocus>
             Agree

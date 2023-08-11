@@ -6,6 +6,7 @@ import { Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
 import CircularProgress from "@mui/joy/CircularProgress";
 import { updateUser } from "../client/client";
+import "../components/form.css";
 
 const UpdateForm = ({ Title, hide, show, data, setRefresh, setShow }) => {
   const [isLoading, setLoading] = useState(false);
@@ -43,13 +44,13 @@ const UpdateForm = ({ Title, hide, show, data, setRefresh, setShow }) => {
         {({ values, handleChange, handleSubmit, errors, touched, dirty }) => (
           <>
             <Modal show={show} onHide={hide}>
-              <Modal.Header closeButton>
+              <Modal.Header className="updateform" closeButton>
                 <Modal.Title>{Title}</Modal.Title>
               </Modal.Header>
               <Form onSubmit={handleSubmit}>
-                <Modal.Body>
+                <Modal.Body className="updateform">
                   <Form.Group>
-                    <Form.Label>ID</Form.Label>
+                    <Form.Label className="labelstyle">ID</Form.Label>
                     <Form.Control
                       type="text"
                       name="Id"
@@ -59,7 +60,7 @@ const UpdateForm = ({ Title, hide, show, data, setRefresh, setShow }) => {
                     />
                   </Form.Group>
                   <Form.Group>
-                    <Form.Label>Name</Form.Label>
+                    <Form.Label className="labelstyle">Name</Form.Label>
                     <Form.Control
                       as="input"
                       name="Name"
@@ -74,7 +75,7 @@ const UpdateForm = ({ Title, hide, show, data, setRefresh, setShow }) => {
                     )}
                   </Form.Group>
                   <Form.Group>
-                    <Form.Label>Age</Form.Label>
+                    <Form.Label className="labelstyle">Age</Form.Label>
                     <Form.Control
                       as="input"
                       name="Age"
@@ -89,7 +90,7 @@ const UpdateForm = ({ Title, hide, show, data, setRefresh, setShow }) => {
                     )}
                   </Form.Group>
                   <Form.Group>
-                    <Form.Label>Email</Form.Label>
+                    <Form.Label className="labelstyle">Email</Form.Label>
                     <Form.Control
                       as="input"
                       name="Email"
@@ -104,8 +105,8 @@ const UpdateForm = ({ Title, hide, show, data, setRefresh, setShow }) => {
                     )}
                   </Form.Group>
                 </Modal.Body>
-                <Modal.Footer>
-                  <button type="submit" disabled={!dirty}>
+                <Modal.Footer className="updateform">
+                  <button className="fill" type="submit" disabled={!dirty}>
                     {isLoading && (
                       <CircularProgress
                         color="danger"

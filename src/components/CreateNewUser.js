@@ -4,7 +4,6 @@ import { Form } from "react-bootstrap";
 import CircularProgress from "@mui/joy/CircularProgress";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
-import axios from "axios";
 import "./form.css";
 import { createUser } from "../client/client";
 
