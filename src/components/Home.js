@@ -5,8 +5,9 @@ const Home = () => {
   return (
     <div className="alignment">
       <h2 className="heading">
-        WELCOME TO SIMPLE CRUD APPLICATION PLEASE NAVIGATE TO APPROPRIATE PAGE
-        TO PERFORM THE DESIRED ACTION.
+        WELCOME TO SIMPLE CRUD APPLICATION <br />
+        <br /> The aim of this project is to demonstrate a full stack
+        integration.
       </h2>
     </div>
   );

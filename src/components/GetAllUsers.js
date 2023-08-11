@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from "react";
-import DataTable from "react-data-table-component";
+import DataTable, { createTheme } from "react-data-table-component";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import UpdateForm from "./UpdateUser";
@@ -12,6 +12,31 @@ const GetAllUsers = () => {
   const [show, setShow] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [open, setOpen] = useState(false);
+  createTheme(
+    "solarized",
+    {
+      text: {
+        primary: "#268bd2",
+        secondary: "#2aa198",
+      },
+      background: {
+        default: "#002b36",
+      },
+      context: {
+        background: "#cb4b16",
+        text: "#FFFFFF",
+      },
+      divider: {
+        default: "#073642",
+      },
+      action: {
+        button: "rgba(0,0,0,.54)",
+        hover: "rgba(0,0,0,.08)",
+        disabled: "rgba(0,0,0,.12)",
+      },
+    },
+    "dark"
+  );
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -35,6 +60,7 @@ const GetAllUsers = () => {
     getUsers()
       .then((data) => {
         setUser(data);
+        setRefresh(false);
       })
       .catch((err) => {
         console.log(err);
@@ -82,7 +108,7 @@ const GetAllUsers = () => {
   return (
     <>
       <UpdateForm
-        Title="Testing"
+        Title="Update User Info"
         show={show}
         hide={() => {
           setShow(false);
@@ -97,7 +123,7 @@ const GetAllUsers = () => {
         handleClose={handleClose}
         handleDelete={handleDelete}
       />
-      <DataTable columns={columns} data={user} pagination />
+      <DataTable columns={columns} data={user} pagination theme="solarized" />
     </>
   );
 };

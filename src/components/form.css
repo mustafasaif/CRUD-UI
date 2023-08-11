@@ -31,6 +31,7 @@ input[type=email] {
 }
 
 .fill {
+  color:black;
   margin-top: 30px;
   font-size: 20px;
   font-weight: 250; 
@@ -43,7 +44,8 @@ input[type=email] {
   background-color: rgba(245, 81, 81, 0);
 }
 .fill:hover{
- background-color: rosybrown;
+ background-color: #612D2D;
+ color: white;
 }
 
 
