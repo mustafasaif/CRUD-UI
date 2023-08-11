@@ -43,10 +43,7 @@ export const CONTENT_TYPE = "application/json";
 let client = null;
 export const createHttpClient = (API_BASE_URL) => {
   if (!client) {
-    let BASE_URL =
-      API_BASE_URL ||
-      process.env.BEEM_API_URL ||
-      process.env.REACT_APP_BEEM_API_URL;
+    let BASE_URL = API_BASE_URL || process.env.REACT_APP_BACKEND_URL;
     // Set the BASE_URL based on the provided API_BASE_URL or environment variables
     // ...
 
@@ -134,13 +131,19 @@ export const HEADERS = {
 };
 
 export const getUsers = () => {
-  return get("http://localhost:3001/v1/all");
+  return get(`${process.env.REACT_APP_BACKEND_URL}/v1/all`);
 };
-
 export const updateUser = (data) => {
-  return patch(`http://localhost:3001/v1/update${data.Id}`, data);
+  return patch(
+    `${process.env.REACT_APP_BACKEND_URL}/v1/update${data.Id}`,
+    data
+  );
 };
 
 export const deleteUser = (data) => {
-  return del(`http://localhost:3001/v1/delete${data._id}`);
+  return del(`${process.env.REACT_APP_BACKEND_URL}/v1/delete${data._id}`);
+};
+
+export const createUser = (data) => {
+  return post(`${process.env.REACT_APP_BACKEND_URL}/v1/create`, data);
 };
